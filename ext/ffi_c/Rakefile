@@ -1,0 +1,31 @@
+require 'rubygems'
+require 'rubygems/ext'
+
+__DIR__ = File.dirname(File.absolute_path(__FILE__))
+
+spec = Gem::Specification.load("#{__DIR__}/../../ffi.gemspec")
+
+# create a Makefile for systems that should actually build the extension
+# by calling have RG call our extconf.rb sibling rather than generating
+# a dummy Makefile that requires clients to have `make` on PATH even
+# though it's not used.
+if !defined?(RUBY_ENGINE) || RUBY_ENGINE == "ruby"
+  # BROKEN - need to use `Gem::Installer.gem_dir` for --user-install support
+  gem_dir = File.join Gem.dir, 'gems', spec.full_name
+  dest_path = File.join gem_dir, spec.require_paths.first
+
+  results = []
+
+  # FIXME hangs the build
+  #  * rake infinite recursion issues?
+  #  * pathing issues?
+=begin
+  Gem::Ext::ExtConfBuilder.build(spec.extensions.first,
+                                 gem_dir,
+                                 dest_path,
+                                 results,
+                                 )
+=end
+end
+
+task :default
