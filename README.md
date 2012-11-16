@@ -15,8 +15,7 @@ a number of interesting use cases in which your `extconf.rb` might want to bypas
 (at runtime) creating a `Makefile`. RubyGems currently prevents you, the gem author,
 from being able to make this decision.
 
-<pre><code>
-class Gem::Ext::ExtConfBuilder &lt; Gem::Ext::Builder
+<pre><code>class Gem::Ext::ExtConfBuilder &lt; Gem::Ext::Builder
 
   def self.build(extension, directory, dest_path, results)
     cmd = "#{Gem.ruby} #{File.basename extension}"
@@ -33,11 +32,10 @@ end
 </code></pre>
 
 That's a trivial fix to RG, right? Just check `run`'s return value before calling `make`.
-Done, submit the pull request and move on. Well, you've got two more hurdles in front
-to clear. The first is the current implementation of `Gem::Ext::Builder#run`
+Done, submit the pull request and move on. Well, you've got two more hurdles to clear.
+The first is the current implementation of `Gem::Ext::Builder#run`
 
-<pre><code>
-class Gem::Ext::Builder
+<pre><code>class Gem::Ext::Builder
 
   def self.run(command, results)
     results &lt;&lt; command
