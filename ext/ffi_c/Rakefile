@@ -19,13 +19,11 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == "ruby"
   # FIXME hangs the build
   #  * rake infinite recursion issues?
   #  * pathing issues?
-=begin
   Gem::Ext::ExtConfBuilder.build(spec.extensions.first,
                                  gem_dir,
                                  dest_path,
-                                 results,
+                                 results
                                  )
-=end
 end
 
 task :default
