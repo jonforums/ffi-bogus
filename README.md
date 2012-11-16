@@ -16,11 +16,11 @@ a number of interesting use cases in which your `extconf.rb` might want to bypas
 from being able to make this decision.
 
 <pre><code>
-class Gem::Ext::ExtConfBuilder < Gem::Ext::Builder
+class Gem::Ext::ExtConfBuilder \< Gem::Ext::Builder
 
   def self.build(extension, directory, dest_path, results)
     cmd = "#{Gem.ruby} #{File.basename extension}"
-    cmd << " #{Gem::Command.build_args.join ' '}" unless Gem::Command.build_args.empty?
+    cmd \<\< " #{Gem::Command.build_args.join ' '}" unless Gem::Command.build_args.empty?
 
     run cmd, results
 
@@ -40,8 +40,8 @@ to clear. The first is the current implementation of `Gem::Ext::Builder#run`
 class Gem::Ext::Builder
 
   def self.run(command, results)
-    results << command
-    results << `#{command} #{redirector}`
+    results \<\< command
+    results \<\< `#{command} #{redirector}`
 
     unless $?.success? then
       raise Gem::InstallError, "#{class_name} failed:\n\n#{results.join "\n"}"
