@@ -16,7 +16,7 @@ a number of interesting use cases in which your `extconf.rb` might want to bypas
 from being able to make this decision.
 
 For example, what if you wanted to deliver a universal gem that, on appropriate systems,
-compile an optimized version, and on other systems fall back to a pure-ruby implementation?
+compiles an optimized version, and on other systems, falls back to a pure-ruby implementation?
 
 <pre><code>class Gem::Ext::ExtConfBuilder &lt; Gem::Ext::Builder
 
@@ -55,3 +55,18 @@ end
 The second hurdle for your SuperPatch is to figure out how `extconf.rb` can signal
 `Gem::Ext::ExtConfBuilder.build` that a `Makefile` wasn't created and `make`
 shouldn't be run. And do it in a way that doesn't break existing `extconf.rb`'s.
+
+Wait a second. Instead of raising an error if a `Makefile` doesn't exist, can we
+bail out of `make` without any legacy breakage or unintended consequences?
+
+<pre><code>class Gem::Ext::Builder
+
+  def self.make(dest_path, results)
+    unless File.exist? 'Makefile' then
+      raise Gem::InstallError, "Makefile not found:\n\n#{results.join "\n"}"
+    end
+    ...
+  end
+  ...
+end
+</code></pre>
